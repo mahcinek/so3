@@ -27,8 +27,8 @@ public class ZapytLRU {
 
     public void addRight (int a)
     {
-        if (a==0) reference=reference+"0";
-        if (a==1) reference=reference+"1";
+        if (a==0) reference="0"+reference;
+        if (a==1) reference="1"+reference;
 
     }
 

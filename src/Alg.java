@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Random;
 
 /**
  * Created by qwerty on 2016-05-09.
@@ -133,38 +134,69 @@ public class  Alg {
         return licznik;
     }
 
+    public int random (int [] tab, int wlk)
+    {
+
+        ArrayList<Integer> arr = new ArrayList<>();
+        int licznik = 0;
+        Random a = new Random();
+        for (int i=0;i<tab.length;i++)
+        {
+            for (int h:arr)
+            {System.out.println(h);}
+            if (arr.size()<wlk&&!arr.contains(tab[i]))
+            {
+                arr.add(tab[i]);
+            }
+            else if (!arr.contains(tab[i])) {
+
+                arr.remove(a.nextInt(wlk));
+                licznik++;
+                arr.add(tab[i]);
+            }
+        }
+        return licznik;
+    }
+
     public int aLru (ArrayList<ZapytLRU> tab, int wlk){
-        int licznik =0;
-        int index=0;
+        int licznik = 0;
         ArrayList<ZapytLRU> pom  = new ArrayList<ZapytLRU>();
         for (int i=0;i<tab.size();i++)
         {
             if (zaw(pom,tab.get(i)))
             {
-              ZapytLRU w= pom.get(indexOfZaw(pom,tab.get(i)));
+                ZapytLRU w= pom.get(indexOfZaw(pom,tab.get(i)));
                 w.move();
-                w.reference="1"+w.reference;
+                w.addRight(1);
                 pom.set(indexOfZaw(pom,tab.get(i)),w);
                 continue;
             }
             if (!zaw(pom,tab.get(i))&&pom.size()<wlk)
             {pom.add(tab.get(i));
-
             }
             else
             {
-
-                  licznik++;
-                pom.remove(indexOfBest(pom));
-                for (ZapytLRU q:pom)
+                for (ZapytLRU a:pom)
                 {
-                 q.move();
-                   q.reference="0"+q.reference;
+                    a.move();
+                    a.addRight(0);
                 }
+                licznik++;
+                int indexOfMin=0;
+                int li = 0;
+                int min = Integer.parseInt(pom.get(0).reference);
+                for (ZapytLRU b:pom)
+                {
 
-
-
-        }
+                    int w = Integer.parseInt(b.reference);
+                    if (w<min)
+                    {min=w;
+                        indexOfMin = li;
+                    }
+                    li++;
+                }
+                pom.remove(indexOfMin);
+            }
         }
 
         return licznik;

@@ -41,7 +41,9 @@ public class Main {
             dowysl.add(wart);
         }
         Alg alg = new Alg();
+        int rand=alg.random(wartos,pam);
         int liczfifo= alg.fifo(wartos,pam);
+        System.out.println("Random:"+rand);
         System.out.println("FIFO:"+liczfifo);
         Zapyt [] zapytan =new Zapyt[wartos.length];
         ArrayList<Zapyt> dowyslZapyt = new ArrayList<Zapyt>();
