@@ -32,13 +32,13 @@ public class  Alg {
         return licznik;
     }
 
-    public int opt (ArrayList<Zapyt> tab, int wlk)
+    public int opt (ArrayList<Zapyt> tab, int wlk) //chyba jakoś naprawiłem przypadkiem
     {
         ArrayList<Zapyt> arr = new ArrayList<Zapyt>();
 
         int licznik = 0;
         for (int i=0;i<tab.size();i++)
-        {   Zapyt pom = new Zapyt(1);
+        {   Zapyt pom = new Zapyt(1); //gramy na skróty, jakoś klasa statyczna nie chciała się zrobić z niewoadmoego powodu
 
            /* System.out.println("Do wpisania" + tab.get(i).wartosc);
             for (Zapyt za:arr)
@@ -46,20 +46,22 @@ public class  Alg {
             System.out.println();
             System.out.println("===========");
             System.out.println();*/
-            if (arr.size()<wlk&&!(pom.zawiera(arr,tab.get(i))))
+            if (arr.size()<wlk&&!(pom.zawiera(arr,tab.get(i)))) //jeżeli w pamięci nie ma danej strony i jest miejsce, to ją doajemy
             {
                 arr.add(tab.get(i));
+                continue;
             }
-            if (!(pom.zawiera(arr,tab.get(i)))) {
+            if (!(pom.zawiera(arr,tab.get(i)))) { //nie ma jej, ale brak miejsca
             {
-                for (int up=0;up<arr.size();up++)
+                licznik++;
+                for (int up=0;up<arr.size();up++) //przechodzimy po requestach przeglądając je po kolei
                 {
-                    int war = arr.get(up).wartosc;
-                        for (int k =i;k<tab.size();k++)
+                    int war = arr.get(up).wartosc; //pobieramy wartość reqestu
+                        for (int k =i;k<tab.size();k++) //szukamy kolejnego powtórzenia
                          {
                            if (war==tab.get(k).wartosc)
                             {
-                                arr.get(up).setOpt(k-i);
+                                arr.get(up).setOpt(k-i); //opt ustawiamy na odległość do kolejnego wystąpienia
                                 break;
                             }
 
@@ -74,20 +76,15 @@ public class  Alg {
                 System.out.println();*/
                 int max =arr.get(0).opt;
                 int maxIndex=0;
-                for (int up=0;up<arr.size();up++)
+                for (int up=0;up<arr.size();up++) //szukamy obiektu
                 {
                     if (arr.get(up).opt>max)
-                    max=arr.get(up).opt;
-                }
-
-                for (int up=0;up<arr.size();up++) {
-                    if (arr.get(up).opt == max) {
-                        arr.remove(up);
-                        arr.add(tab.get(i));
-                        licznik++;
-                        break;
+                    {max=arr.get(up).opt;
+                     maxIndex=up;
                     }
+
                 }
+                    arr.remove(maxIndex); //usuwamy z pamięci obiekt onajwiększej odległości do kolejnego odwołania
             }
          //   System.out.println("Licznik"+ licznik);
         }
@@ -158,25 +155,24 @@ public class  Alg {
         return licznik;
     }
 
-    public int aLru (ArrayList<ZapytLRU> tab, int wlk){
+    public int aLru (ArrayList<ZapytLRU> tab, int wlk){ //dodatkowe bity odwołań
         int licznik = 0;
         ArrayList<ZapytLRU> pom  = new ArrayList<ZapytLRU>();
         for (int i=0;i<tab.size();i++)
         {
-            if (zaw(pom,tab.get(i)))
+            if (zaw(pom,tab.get(i))) //jeżeli w pamięci już jest dany obiekt
             {
                 ZapytLRU w= pom.get(indexOfZaw(pom,tab.get(i)));
-                w.move();
-                w.addRight(1);
-                pom.set(indexOfZaw(pom,tab.get(i)),w);
+                w.move(); //uswuwamy najmniej znaczący bit
+                w.addRight(1); //na najbardziej znaczące miejsce (nazwa jest myląca, bo dodajemy z lewej tka naprawde) dodajemy 1
                 continue;
             }
-            if (!zaw(pom,tab.get(i))&&pom.size()<wlk)
+            if (!zaw(pom,tab.get(i))&&pom.size()<wlk) //nie ma danego obiektu w pamięci i jest miejsce = odajemy go
             {pom.add(tab.get(i));
             }
-            else
+            else //nie ma obieku i nie ma miejsca
             {
-                for (ZapytLRU a:pom)
+                for (ZapytLRU a:pom) //ustawiamy wszystkim obiektom w pamięci najwyższy bit na 0, bo nie było odwołania
                 {
                     a.move();
                     a.addRight(0);
@@ -185,7 +181,7 @@ public class  Alg {
                 int indexOfMin=0;
                 int li = 0;
                 int min = Integer.parseInt(pom.get(0).reference);
-                for (ZapytLRU b:pom)
+                for (ZapytLRU b:pom) //szukamy elementu z najmniejszym stringiem referencji (parsując liczbę w stringu na int i szukając go)
                 {
 
                     int w = Integer.parseInt(b.reference);
@@ -195,7 +191,7 @@ public class  Alg {
                     }
                     li++;
                 }
-                pom.remove(indexOfMin);
+                pom.remove(indexOfMin);//usuwamy z pamięci obiekt o najmniejszym ciągu referencji
             }
         }
 

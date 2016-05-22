@@ -6,6 +6,11 @@ public class Main {
     public static void main(String[] args) {
         int pam = 3; //wielkość pamięci służąca do wywoływania metod
 
+        /*
+        *
+        * Dużo nieporzebnych powtórzeń, ale main działa, co prawda jest troche śmieci
+        * */
+
         int [] aktywnaPamiec = new int[5];
         int [] dysk = new int [1200];
         ArrayList<double []> lisaZapytan = new ArrayList<double[]>();
@@ -66,8 +71,13 @@ public class Main {
             ar2.add(new ZapytLRU(y,"0",1));
         }
         int alru= alg.aLru(ar,pam);
+        ArrayList<ZapytLRU> pam2 = new ArrayList<ZapytLRU>();
         System.out.println("Dodatkowe bity odwołań" + alru);
-        int alru2 = alg.drugaSzansa(ar2,pam);
+        for (ZapytLRU r:ar)
+        {
+            pam2.add(r);
+        }
+        int alru2 = alg.drugaSzansa(pam2,pam);
         System.out.println("Druga szansa"+ alru2);
 
 //        int opt= alg.opt(zapytan,5);
